@@ -88,6 +88,8 @@ Object.methods
 
 ## String Class
 
+- Ruby strings are **mutable**
+
 ```ruby
 “hello”.class == String
 
@@ -353,3 +355,183 @@ s !~ /bye/                  # true
 - `\D` - any non-digit
 - '\S` - any non-whitespace
 - `\W` - any non-word character
+
+### Back References
+
+- Ruby remembers which parts of string were matched by parenthesized portion of regular expression
+
+```ruby
+gets =~ /^Min: (\d+) Max: (\d+)$/
+min, max = $1, $2
+puts “mini=#{min} maxi=#{max}”
+```
+
+- Despite $-prefixed names, back references are *local* variables
+- If another search is performed all back references set to `nil`
+
+```ruby
+gets =~ /(h)e(ll)o/
+puts $1                 # h
+puts $2                 # ll
+
+gets =~ /h(e)llo/
+puts $1                 # e
+puts $2                 # nil
+
+gets =~ /hello/
+puts $1                 # nil
+```
+
+### String.scan
+
+- If regexp doesn't contain parenthesized subparts, returns an array of matches
+
+```ruby
+s = "CMSC 330 Fall 2018"
+
+s.scan(/\S+ \S+/)
+# ["CMSC 330", "Fall 2018"]
+
+s.scan(/\S{2}/)
+# ["CM", "SC", "33", "Fa", "ll", "20", ”18"]
+```
+
+- If regexp contains parenthesized subparts, returns an array of arrays
+
+```ruby
+s = "CMSC 330 Fall 2018"
+
+s.scan(/(\S+) (\S+)/)       # [["CMSC", "330"], ["Fall", "2018"]]
+```
+
+## Object Copy vs. Reference Copy
+
+```ruby
+# reference copy
+x = "groundhog" 
+y = x
+
+# object copy
+x = "groundhog"
+y = String.new(x)
+```
+
+## Operators
+
+- Structural equality (do both things have the same contents) is `==`
+- Physical equality (do both things point to the same memory location) is `equal?` 
+- Comparison operator (for sorting) is `<=>`
+  - -1 is less, 0 is equal, +1 is greater
+  - 3 <=> 4 returns -1
+  - 4 <=> 3 returns +1
+  - 3 <=> 3 returns 0
+  - if result of spaceship is a 1, Ruby will swap the 2 elements of the array
+  - if result of a spaceship is 0 or -1, Ruby will leave the array alone
+
+```ruby
+[2,5,1,3,4].sort                     # returns [1,2,3,4,5]
+[2,5,1,3,4].sort { |x,y| y <=> x }   # returns [5,4,3,2,1]
+```
+
+## Ranges
+
+- 1..3 is an object of class Range (i.e. [1,3]) -> inclusive on both ends
+- 1...3 is an object of class Range (i.e. [1,3)) -> exclusive on right
+- ‘a’..’z’ represents the range of letters ‘a’ to ‘z’
+- 1.3...2.7 is the continuous range [1.3,2.7)
+
+## Mixins
+
+- Include A “inlines” A’s methods at that point
+  - use a module for A, not class
+- A module is a collection of methods and constants
+  - module methods can be called directly
+  - instance methods are "mixed in" to another class
+ 
+```ruby
+module Doubler
+    def Doubler.base            # module method
+        2
+    end
+    def double                  # instance method
+        self + self
+    end
+end
+
+class Integer                   # extends Integer
+    include Doubler
+end
+
+class String                    # extends String
+    include Doubler
+end
+
+10.double                       # 20
+
+"hello".double                  # "hellohello"
+```
+
+- When you call method m of class C, look for m
+  - in class C
+  - in mixin in class C
+    - if multiple mixins included, start in latest mixin, then try earlier (shadowed) ones …
+  - in C's superclass
+  - in C's superclass mixin
+  - in C's superclass's superclass
+
+## Code Block
+
+- `each` invokes the given code block *without* modifying the array
+- `find` returns first element for which block returns true
+- `collect` applies code block to each element of array and returns new array
+- `collect!` applies code block to each element of array and modifies the array
+- `n.times` runs code block n times
+- `n.upto(m)` runs code block for integers n..m
+- alternative syntax: `do … end` instead of `{ … }`
+
+```ruby
+a = [1,2,3]
+a.collect! { |z| z+1 }          # ok
+y = { |z| z+1 }                 # syntax error (code blocks cannot be stored in a variable)
+a.collect! y                    # syntax error (code blocks cannot be passed to/returned from methods)
+```
+
+```ruby
+def countx(x)                   # 1
+    for i in (1..x)             # foo
+        puts i                  # 2
+        yield                   # foo
+    end                         # 3
+end                             # foo
+                                # 4   
+countx(4) { puts "foo" }        # foo
+```
+
+```ruby
+def do_it_twice 
+    return "No block" unless block_given?
+    yield "hello"
+    yield "there"
+end
+                                            # hello
+do_it_twice { |x| puts x }                  # there
+```
+
+## Procs
+
+- First class code blocks (can be passed around, stored, have their code invoked via `call`)
+
+```ruby
+t = Proc.new {|x| x+2}
+
+def say(p)
+    p.call 10
+end
+
+puts say(t)             # 12    
+```
+
+## Exceptions
+
+- Use begin...rescue...ensure...end 
+- Like try...catch...finally in Java
