@@ -1,5 +1,9 @@
 # Rust
 
+## Overview
+
+- memory management without garbage collection
+
 ## Basics
 
 ```rust
@@ -136,4 +140,106 @@ fn dist2((sx,sy):(f64,f64),(ex,ey):(f64,f64)) -> f64 {  // can include patterns 
     fn f(n:[u32; 5]) -> u32 {                           // will pass type-checking since array size is known at compile time
         n[0]
     } 
+```
+
+## Ownership
+
+### Overview
+
+- each value in Rust has a variable that is its owner
+- there can only be one owner at a time
+- when the owner goes out of scope, the value will be dropped (freed)
+
+```rust
+{
+    let mut s = String::from("hello");              // s's contents are allocated on the heap
+    s.push_str(", world!");                         // appends to s
+    println!("{}", s);                              // prints hello, world!
+}                                                   // s goes out of scope so its data is dropped (freed)   
+```
+```rust
+    let x = String::from("hello");                  
+    let y = x;                                      // heap-allocated data is copied by reference 
+                                                    // x and y point to the same string "hello"
+                                                    // y is now the owner though (x has been moved to y)
+                                                    // x can't be used to access the string "hello" on the heap now
+```
+```rust
+    let x = String::from("hello");                  
+    let y = x.clone();                              // x is no longer moved since a deep copy of it was made
+    println!("{}, world!", y);                      // ok, since x and y are owners of two different strings
+    println!("{}, world!", x);                      // ok
+```
+```rust
+    let x = 5;
+    let y = x;
+    println!("{} = 5!", y);                         // ok, since primitives (like i32) are copied automatically
+    println!("{} = 5!", x);                         // ok, since x and y are owners of two different values
+```
+```rust
+    fn main() {
+        let s1 = String::from(“hello”);
+        let s2 = id(s1);                            // calling function moves s1 to argument of that function
+        println!(“{}”, s2);                         // ownership of the "hello" string is given to s2
+        println!(“{}”, s1);                         // fails, since s1 wasn't made owner of string again (s2 is the owner)
+    }
+    
+    fn id(s:String) -> String {
+        s                                           // ownership of s given to caller, on return
+    }
+```
+
+### References
+
+- explicit, non-owning pointer to the original data
+- cannot modify the data (immutable by default)
+- creating a reference is called borrowing and is done through the & operator
+
+```rust
+fn main() { 
+    let s1 = String::from(“hello”);
+    let len = calc_len(&s1);                        // lends a non-owning pointer to the argument of the function
+    println!(“the length of ‘{}’ is {}”, s1, len);
+}
+
+fn calc_len(s: &String) -> usize {
+    s.push_str(“hi”);                               // fails, references can't mutate underlying data by default
+    s.len()                                         // s is dropped but not its referent (owner)
+}
+```
+
+- at any time, there can be one mutable reference OR any number of immutable references
+- invariant is that the content pointed to won't change while my reference is alive
+
+```rust
+{ 
+    let mut s1 = String::from(“hello”);                     // s1 is the owner of the mutable string "hello"
+    { 
+        let s2 = &s1;                                       // creates immutable reference s2 to the mutable string
+        println!("String is {} and {}", s1, s2);            // ok, since this is read-only behavior
+        s1.push_str(" world!");                             // can't modify original value until references dropped
+    }                                                       // s2 is dropped at this point (mutation now allowed)
+    s1.push_str(" world!");                                 // ok, since s1 is owner and no references exist now
+    println!("String is {}", s1);                           // prints "hello world!"
+}
+```
+```rust
+    let mut s1 = String::from(“hello”);                     // s1 is the owner of the mutable string "hello"
+    { 
+        let s2 = &s1;                                       // s2 is an immutable reference to the mutable string "hello"
+        s2.push_str(“ there”);                              // disallowed since s2 is an immutable, read-only reference
+    }                                                       // s2 is dropped at this point (but not referent)
+    let mut s3 = &mut s1;                                   // ok since s1 is a mutable reference
+    s3.push_str(“ there”);                                  // ok since s3 is a mutable reference
+    println!(”String is {}”, s3);                           // ok
+```
+```rust
+    let mut s1 = String::from(“hello”);                     // s1 is the owner of the mutable string "hello"
+    { 
+        let s2 = &mut s1;                                   // s2 is a mutable reference to the mutable string "hello"
+        let s3 = &mut s1;                                   // fails, cannot have more than one mutable reference at a time
+        s1.push_str(“ there”);                              // fails, push_str takes a mutable reference (not allowed for above reason)
+    }                                                       // s2 is dropped here
+    s1.push_str(“ there”);                                  // ok: s1 is owner, no references are alive, and string is mutable
+    println!(”String is {}”, s1);                           // ok
 ```
