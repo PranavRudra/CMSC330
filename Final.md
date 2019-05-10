@@ -240,6 +240,6 @@ fn calc_len(s: &String) -> usize {
         let s3 = &mut s1;                                   // fails, cannot have more than one mutable reference at a time
         s1.push_str(“ there”);                              // fails, push_str takes a mutable reference (not allowed for above reason)
     }                                                       // s2 is dropped here
-    s1.push_str(“ there”);                                  // ok: s1 is owner, no references are alive, and string is mutable
+    s1.push_str(“ there”);                                  // ok: s1 is owner, string is mutable, no references are alive
     println!(”String is {}”, s1);                           // ok
 ```
