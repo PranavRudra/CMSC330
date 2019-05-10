@@ -133,7 +133,7 @@ fn dist2((sx,sy):(f64,f64),(ex,ey):(f64,f64)) -> f64 {  // can include patterns 
         n[0]
     } 
     
-    fn f(n:[u32; 5]) -> u32 {                              // will pass type-checking since array size is known at compile time
+    fn f(n:[u32; 5]) -> u32 {                           // will pass type-checking since array size is known at compile time
         n[0]
     } 
 ```
