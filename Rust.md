@@ -478,7 +478,7 @@
 ```
 ```rust
     fn app_int<T>(f:T, x:i32) -> i32 where T:Fn(i32) -> i32 {    // Fn trait enables us to pass in a closure
-        f(x)
+        f(x)                                                     // T is a trait with type i32 -> i32
     }
     
     fn main() {
@@ -527,4 +527,10 @@
         fn next(&mut self) -> Option<Self::Item>;               // next() method is called on each iteration 
                                                                 // next() returns immutable references to elements of list
     }
+```
+```rust
+    i.map(f)        // produces new iterator from iterator i that returns f(e) for each of i's elements e
+    i.filter(f)     // produces new iterator from iterator i that returns f(e) == true for each of i's elements e
+    i.collect()     // converts an iterator into a vector holding the results of iteration
+    i.fold(a, f)    // similar to OCaml's fold_right
 ```
