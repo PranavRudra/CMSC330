@@ -86,3 +86,6 @@
             let insert s i = Ins(i,s)
         end
 ```
+```ocaml
+    IntSet.insert IntSetBST.empty 0;;   (* mixing IntSet, IntSetBST not allowed since they may have different representations *)
+```
