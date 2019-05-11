@@ -243,3 +243,77 @@ fn calc_len(s: &String) -> usize {
     s1.push_str(“ there”);                                  // ok: s1 is owner, string is mutable, no references are alive
     println!(”String is {}”, s1);                           // ok
 ```
+## Data Structures
+
+### Strings
+
+- stored on the stack as a 3-tuple (pointer to heap data, length, capacity)
+- heap data is dropped when the owner of the data goes out of scope
+- length is always <= capacity
+
+### Slices
+
+- string slice (type `&str`) is stored on the stack as a 2-tuple (pointer to heap data, length)
+- if `s` is a string then `&s[range]` is a slice where range has following properties
+  - `i..j` is the range [i, j)
+  - `i..` is the range from i to the current length (basically i to the end)
+  - `..j` is the range [0, j) (basically from 0 to j excluding j)
+  - `..` is the range from 0 to the current length (basically entire string)
+ 
+```rust
+    let mut s = String::from("hello world");        // s is the owner of the mutable string "hello world"
+    let word = first_word(&s);                      // slice argument of first_word borrows from s (slices are references)
+    s.clear();                                      // error can't drop data while reference is alive; violates invariant
+```
+
+```rust
+    let s:&str = "hello world";                     // string literals ARE slices 
+```
+
+### Vectors
+
+```rust
+    { 
+        let mut v:Vec<i32> = Vec::new();            // v is the owner of a mutable vector of 32-bit integers
+        v.push(1);                                  // adds 1 to v
+        v.push(“hi”);                               // error – can't add a string literal to a vector
+        let w = vec![1, 2, 3];                      // w is the owner of an immutable vector of 32-bit integers
+    }                                               // v, w and their elements are dropped here
+```
+```rust
+    let v = vec![1, 2, 3, 4, 5];
+    let third:&i32 = &v[2];                         // panics if index is out of bounds
+    let third:Option<&i32> = v.get(2);              // returns None if index out of bounds
+```
+```rust
+    let mut a = vec![10, 20, 30, 40, 50];           // a is the owner of the mutable vector
+    { 
+        let p = &mut a[1];                          // mutable borrow of the second element
+        *p = 2;                                     // updates the second element of the vector
+    }                                               // restores ownership to a
+    println!("vector contains {:?}", a);            // ok
+```
+```rust
+    let a = vec![10, 20, 30, 40, 50];               // a is the owner of an immutable vector
+    let b = &a[1..3];                               // b is an immutable slice holding [20,30]
+    let c = &b[1];                                  // c is an immutable reference to second element of b
+    println!("{}",c);                               // prints 30
+```
+
+## Traits
+
+- Rust's version of interfaces
+
+```rust
+    pub trait Summarizable {
+        fn summary(&self) -> String;                // &self indicates that this is an "instance" method
+    }
+```
+```rust
+    impl Summarizable for (i32, i32) {              // (i32, i32) indicates trait is implemented for 2-tuples of 32-bit integers
+        fn summary(&self) -> String {               
+            let &(x, y) = self;                     // extracting data from the tuple via pattern matching
+            format!("{}", x + y)
+        }
+    }
+```
