@@ -64,3 +64,25 @@
     Foo.add 3 4;;                                               (* ok, since add is exposed by the type definition *)
     Foo.mult 3 4;;                                              (* not accessible since mult is not exposed *)
 ```
+
+## ADT
+
+- Hide data's internal representation from clients while exposing functionality to operate on that data
+
+```ocaml
+    module type INT_SET =
+        sig
+            type set                                            (* abstract/hidden so that it can be used to define function signatures but not be exposed *)
+            val empty : set
+            val isEmpty : set -> bool
+            val insert : set -> int -> set
+            val contains : set -> int -> bool
+        end;;
+
+    module IntSet : INT_SET =
+        struct
+            type set = Empty | Ins of int * set                 
+            ...
+            let insert s i = Ins(i,s)
+        end
+```
