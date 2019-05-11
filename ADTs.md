@@ -95,7 +95,7 @@
 ### Static Typing
 - well-typed programs are accepted by the language's type system
 - well-defined programs are defined by the language's semantics (i.e. `char buf[4]; buf[4] = 'c';` isn't well-defined)
-- type-safe language is a language in which well-typed programs are always well-defined (i.e. well-typed => well-defined)
+- type-safe language is one in which well-typed programs are always well-defined (i.e. well-typed => well-defined)
 
 ```ocaml
     4 + "hi";;                                  (* undefined *)
@@ -117,8 +117,8 @@
 
 ### Implications
 - languages that are dynamically typed are basically well-defined in every case (when viewed from a static typing perspective)
-- for example, in Ruby everything is an object but some operations throw exceptions (can't use all operations on all data types)
-  - since runtime environment knows how to deal with these issues (by throwing an exception) execution is well-defined
+- in Ruby everything is an object but some operations throw exceptions (can't use all operations on all data types)
+  - runtime environment knows how to deal with issues (by throwing an exception) so execution is well-defined
 
 ### Properties
 - soundness property: well-typed => well-defined
