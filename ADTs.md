@@ -116,7 +116,7 @@
 ```
 
 ### Implications
-- languages that are dynamically typed are basically well-defined in every case (when viewed from a static typing perspective)
+- dynamically typed languages are basically well-defined in every case (when viewed from static typing perspective)
 - in Ruby everything is an object but some operations throw exceptions (can't use all operations on all data types)
   - runtime environment knows how to deal with issues (by throwing an exception) so execution is well-defined
 
