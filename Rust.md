@@ -312,8 +312,32 @@ fn calc_len(s: &String) -> usize {
 ```rust
     impl Summarizable for (i32, i32) {              // (i32, i32) indicates trait is implemented for 2-tuples of 32-bit integers
         fn summary(&self) -> String {               
-            let &(x, y) = self;                     // extracting data from the tuple via pattern matching
+            let &(x, y) = self;                     // extracting the two 32-bit integers from the tuple via pattern matching
             format!("{}", x + y)
         }
     }
+```
+```rust
+    pub trait Summarizable {
+        fn summary(&self) -> String {               // default implementation to be used by arbitrary type
+            "random string".to_string()
+        }
+    }
+```
+```rust
+    impl Summarizable for (i32, i32, i32) {}
+    (1, 2, 3).summary()                             // return "random string"
+```
+
+### Trait Bounds
+
+```rust
+    pub fn notify<T: Summarizable>(item: T) {       // type T can be anything as long as it implements the Summarizable trait
+        println!("Breaking news! {}",
+        item.summary());                            // since T implements Summarizable, we can call summary() on item
+    }
+```
+```rust
+    fn foo<T:Clone + Summarizable>(…) -> i32 {…}            // type T must implement Clone AND Summarizable
+    fn foo<T>(…) -> i32 where T:Clone + Summarizable {…}    // alternate syntax for the previous method
 ```
