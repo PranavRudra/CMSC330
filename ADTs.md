@@ -114,3 +114,14 @@
         z / y
     end
 ```
+
+### Implications
+- languages that are dynamically typed are basically well-defined in every case (when viewed from a static typing perspective)
+- for example, in Ruby everything is an object but some operations throw exceptions (can't use all operations on all data types)
+  - since runtime environment knows how to deal with these issues (by throwing an exception) execution is well-defined
+
+### Properties
+- soundness property: well-typed => well-defined
+- complete property: well-defined => well-typed
+  - dynamic type systems are often complete since everything is well-defined and passes static type checking
+  - static type systems not usually complete since not all behaviors are well-defined (i.e. previous C example)
