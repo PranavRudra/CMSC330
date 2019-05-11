@@ -514,3 +514,17 @@
     let s = add_x(" there");                                    // consumes the string "hi" in the closure
     let t = add_x(" joe");                                      // fails, add_x has already been used once and x has been destroyed
 ```
+### Iterators
+
+```rust
+    let a = vec![10, 20, 30, 40, 50];
+    for e in a.iter() {                                         // iter() method returns an iterator
+        println!("the value is: {}", e); 
+    }
+    
+    trait Iterator {                                        
+        type Item;                                              // this is an associated type
+        fn next(&mut self) -> Option<Self::Item>;               // next() method is called on each iteration 
+                                                                // next() returns immutable references to elements of list
+    }
+```
