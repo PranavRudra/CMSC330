@@ -534,3 +534,12 @@
     i.collect()     // converts an iterator into a vector holding the results of iteration
     i.fold(a, f)    // similar to OCaml's fold_right
 ```
+```rust
+    let a = vec![10,20];
+    let i = a.iter();
+    let j = i.map(|x| x+1).collect();                   // returns the vector [11,21]
+    let k = a.iter().fold(0,|a,x| x-a);                 // returns 10 (can't use i.fold() since iterator was consumed by previous line)
+    for e in a.iter().filter(|&&x| x == 10) {           // can't use i.filter() since iterator was consumed two lines ago
+        println!("{}", e);                              // prints 10
+    }
+```
