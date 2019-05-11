@@ -341,3 +341,36 @@ fn calc_len(s: &String) -> usize {
     fn foo<T:Clone + Summarizable>(…) -> i32 {…}            // type T must implement Clone AND Summarizable
     fn foo<T>(…) -> i32 where T:Clone + Summarizable {…}    // alternate syntax for the previous method
 ```
+```rust
+    fn largest<T: PartialOrd + Copy>(list: &[T]) -> T {     
+        let mut largest = list[0];                          // Copy trait ensures we can get change ownership to largest
+        for &item in list.iter() {                          // Copy trait ensures that we can "move out of borrowed"
+            if item > largest {                             // PartialOrd trait ensures we can perform this comparison  
+                largest = item;
+            }
+        }
+        largest
+}
+```
+
+## Custom Types
+
+### Structs
+
+```rust
+    struct Rectangle {
+        width: u32,                 // stack-allocated since size is known at compile-time
+        height: u32,
+    }
+    
+    fn main() {
+        let rect1 = Rectangle { width: 30, height: 50 };    // rect1 is the owner of the created immutable rectangle struct
+        println!("rect1’s width is {}", rect1.width);       // accessing fields done through dot notation
+    }
+```
+```rust
+    fn main() {
+        let rect1 = Rectangle { width:30, height:50 };
+        println!("rect1 is {}", rect1);                     // cannot print since it doesn't know how to
+    }                                                       // solution is to add #[derive(Debug)] (uses debug printing)
+```
