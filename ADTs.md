@@ -17,12 +17,12 @@
     int y = c.get_x();
 ```
 ```ocaml
-    let make () =                                   // ocaml's version of a "constructor"
+    let make () =                                   (* ocaml's version of a "constructor" *)
         let x = ref 0 in
-        ( (fun y -> x := y), (fun () -> !x) )       // setter and getter functions
+        ( (fun y -> x := y), (fun () -> !x) )       (* setter and getter functions *)
     ;;
     
     let (set, get) = make ();;
-    set 3;;
+    set 3;;                                         (* updates x since x is in the environment of the setter closure *)
     let y = get ();;
 ```
