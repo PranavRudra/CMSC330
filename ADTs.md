@@ -81,7 +81,7 @@
 
     module IntSet : INT_SET =
         struct
-            type set = Empty | Ins of int * set                 
+            type set = Empty | Ins of int * set     (* clients can define their own set data type *)                 
             ...
             let insert s i = Ins(i,s)
         end
