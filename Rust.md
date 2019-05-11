@@ -7,68 +7,68 @@
 ## Basics
 
 ```rust
-fn main() {
-    println!("Hello world!");   // prints "Hello world!"
-    println!("{} is 5," 5);     // prints "5 is 5"
-}
+    fn main() {
+        println!("Hello world!");   // prints "Hello world!"
+        println!("{} is 5," 5);     // prints "5 is 5"
+    }
 ```
 ```rust
-fn fact(n: i32) -> i32 {        // function that takes in a 32-bit integer and returns a 32-bit integer
-                                // type annotations are required for function signatures
-    if n == 0 { 1 }              
-    else {                      // last executed statement is automatically returned (unless there's a semicolon)
-        let x = fact(n - 1);    // also, no parentheses are present around the if-guard
-        n * x                   // variables are assigned using let
+    fn fact(n: i32) -> i32 {        // function that takes in a 32-bit integer and returns a 32-bit integer
+                                    // type annotations are required for function signatures
+        if n == 0 { 1 }              
+        else {                      // last executed statement is automatically returned (unless there's a semicolon)
+            let x = fact(n - 1);    // also, no parentheses are present around the if-guard
+            n * x                   // variables are assigned using let
+        }
     }
-}
 ```
 
 ### Variables
 ```rust
-fn main() {
-    let mut a: i32 = 0;         // variables are immutable by default in Rust
-    a = a + 1;
-    println!("{}" , a);
-} 
+    fn main() {
+        let mut a: i32 = 0;         // variables are immutable by default in Rust
+        a = a + 1;
+        println!("{}" , a);
+    } 
 ```
 ```rust
-fn main() {
-    let n = 5;
-    let x = if n < 0 {          // if-expressions must return the same type of data (this will cause compile error)
-        10
-    } else {
-        "a"
-    };                          // semicolon required or else compiler will think result of expression is returned
-    print!("{:?}|",x);
-}
+    fn main() {
+        let n = 5;
+        let x = if n < 0 {          // if-expressions must return the same type of data (this will cause compile error)
+            10
+        } else {
+            "a"
+        };                          // semicolon required or else compiler will think result of expression is returned
+        print!("{:?}|",x);
+    }
 ```
 ```rust
-{
-    let x = 37;
-    x = x + 5;                  // error since x is not mutable
-    x
-}
+    {
+        let x = 37;
+        x = x + 5;                  // error since x is not mutable
+        x
+    }
 ```
 ```rust
-{                               
-    let x:u32 = -1;             // error since u32 means unsigned integer
-    let y = x + 5;
-    y
-}
+    {                               
+        let x:u32 = -1;             // error since u32 means unsigned integer
+        let y = x + 5;
+        y
+    }
 ```
 ```rust
-{
-    let x = 37; 
-    let x = x + 5;              // block returns 42 (redefining a variable shadows it)
-    x
-}
+    {
+        let x = 37; 
+        let x = x + 5;              // block returns 42 (redefining a variable shadows it)
+        x
+    }
 ```
 ```rust
-{
-    let x:i16 = -1;             
-    let y:i32 = x + 5;          // error since there is no automatic type conversion
-    y
-}
+    {
+        let x:i16 = -1;             
+        let y:i32 = x + 5;          // error since there is no automatic type conversion
+        y
+    }
 ```
 
 ### Looping
@@ -103,21 +103,21 @@ fn main() {
     let (x, y, z) = tuple;              // tuple fields can be accessed by pattern matching
 ```
 ```rust
-fn dist(s:(f64,f64), e:(f64,f64)) -> f64 {  // accesses tuple fields via pattern matching
-    let (sx,sy) = s;                       
-    let ex = e.0;                           // accesses tuple fields via indexing
-    let ey = e.1;
-    let dx = ex - sx;
-    let dy = ey - sy;
-    (dx*dx + dy*dy).sqrt()                  // returns euclidean distance between two points
-}
+    fn dist(s:(f64,f64), e:(f64,f64)) -> f64 {  // accesses tuple fields via pattern matching
+        let (sx,sy) = s;                       
+        let ex = e.0;                           // accesses tuple fields via indexing
+        let ey = e.1;
+        let dx = ex - sx;
+        let dy = ey - sy;
+        (dx*dx + dy*dy).sqrt()                  // returns euclidean distance between two points
+    }
 ```
 ```rust
-fn dist2((sx,sy):(f64,f64),(ex,ey):(f64,f64)) -> f64 {  // can include patterns in parameters directly
-    let dx = ex - sx;
-    let dy = ey - sy;
-    (dx*dx + dy*dy).sqrt()
-}
+    fn dist2((sx,sy):(f64,f64),(ex,ey):(f64,f64)) -> f64 {  // can include patterns in parameters directly
+        let dx = ex - sx;
+        let dy = ey - sy;
+        (dx*dx + dy*dy).sqrt()
+    }
 ```
 
 ### Arrays
@@ -151,11 +151,11 @@ fn dist2((sx,sy):(f64,f64),(ex,ey):(f64,f64)) -> f64 {  // can include patterns 
 - when the owner goes out of scope, the value will be dropped (freed)
 
 ```rust
-{
-    let mut s = String::from("hello");              // s's contents are allocated on the heap
-    s.push_str(", world!");                         // appends to s
-    println!("{}", s);                              // prints hello, world!
-}                                                   // s goes out of scope so its data is dropped (freed)   
+    {
+        let mut s = String::from("hello");              // s's contents are allocated on the heap
+        s.push_str(", world!");                         // appends to s
+        println!("{}", s);                              // prints hello, world!
+    }                                                   // s goes out of scope so its data is dropped (freed)   
 ```
 ```rust
     let x = String::from("hello");                  
@@ -196,32 +196,32 @@ fn dist2((sx,sy):(f64,f64),(ex,ey):(f64,f64)) -> f64 {  // can include patterns 
 - creating a reference is called borrowing and is done through the & operator
 
 ```rust
-fn main() { 
-    let s1 = String::from(“hello”);
-    let len = calc_len(&s1);                        // lends a non-owning pointer to the argument of the function
-    println!(“the length of ‘{}’ is {}”, s1, len);
-}
+    fn main() { 
+        let s1 = String::from(“hello”);
+        let len = calc_len(&s1);                        // lends a non-owning pointer to the argument of the function
+        println!(“the length of ‘{}’ is {}”, s1, len);
+    }
 
-fn calc_len(s: &String) -> usize {
-    s.push_str(“hi”);                               // fails, references can't mutate underlying data by default
-    s.len()                                         // s is dropped but not its referent (owner)
-}
+    fn calc_len(s: &String) -> usize {
+        s.push_str(“hi”);                               // fails, references can't mutate underlying data by default
+        s.len()                                         // s is dropped but not its referent (owner)
+    }
 ```
 
 - at any time, there can be one mutable reference OR any number of immutable references
 - invariant is that the content pointed to won't change while my reference is alive
 
 ```rust
-{ 
-    let mut s1 = String::from(“hello”);                     // s1 is the owner of the mutable string "hello"
     { 
-        let s2 = &s1;                                       // creates immutable reference s2 to the mutable string
-        println!("String is {} and {}", s1, s2);            // ok, since this is read-only behavior
-        s1.push_str(" world!");                             // can't modify original value until references dropped
-    }                                                       // s2 is dropped at this point (mutation now allowed)
-    s1.push_str(" world!");                                 // ok, since s1 is owner and no references exist now
-    println!("String is {}", s1);                           // prints "hello world!"
-}
+        let mut s1 = String::from(“hello”);                     // s1 is the owner of the mutable string "hello"
+        { 
+            let s2 = &s1;                                       // creates immutable reference s2 to the mutable string
+            println!("String is {} and {}", s1, s2);            // ok, since this is read-only behavior
+            s1.push_str(" world!");                             // can't modify original value until references dropped
+        }                                                       // s2 is dropped at this point (mutation now allowed)
+        s1.push_str(" world!");                                 // ok, since s1 is owner and no references exist now
+        println!("String is {}", s1);                           // prints "hello world!"
+    }
 ```
 ```rust
     let mut s1 = String::from(“hello”);                     // s1 is the owner of the mutable string "hello"
@@ -373,4 +373,87 @@ fn calc_len(s: &String) -> usize {
         let rect1 = Rectangle { width:30, height:50 };
         println!("rect1 is {}", rect1);                     // cannot print since it doesn't know how to
     }                                                       // solution is to add #[derive(Debug)] (uses debug printing)
+```
+```rust
+    impl Rectangle {                                        // defines a method callable on all Rectangle structs
+        fn area(&self) -> u32 {                             // use &self for read-only operations on struct data
+            self.width * self.height                        // use &mut self for operations involving writing
+        }                                                   // use self to take ownership of the struct
+    }
+```
+```rust
+    impl Rectangle {
+        fn square(size:u32) -> Rectangle {                  // static method (lacks the self parameter)
+            Rectangle { width: size, height: size }
+        }
+    }
+```
+```rust
+    struct ImportantExcerpt<‘a> {                           // enables us to store references with different lifetimes
+        part: & ‘a str,                                     // necessary for compiler to know how long references will live
+    }
+    
+    fn main() {
+        let novel =String::from("Generic Lifetime");
+        let i = ImportantExcerpt { part: &novel; }
+    }
+```
+### Enums
+
+```rust
+    enum IpAddr{
+        V4(String),                                     // type required
+        V6(String),
+    }
+
+    impl IpAddr {
+        fn call(&self) {                                // method defined on the enum
+            // method body would be defined here
+        }
+    }
+
+    let m = IpAddr ::V6(String::from("::1"));           // instantiated as enum::field(value)
+    m.call();
+```
+
+### Generics
+```rust
+    struct Point<T> {                                   // generics can be used with structs
+        x: T,
+        y: T,
+    }
+```
+```rust
+    impl<T> Point<T> {                                  // generics can be used in methods
+        fn x(&self) -> &T {
+            &self.x
+        }
+    }
+```
+
+### Matching
+
+```rust
+    fn plus_one(x:Option<i32>) -> Option<i32> {
+        match x {                                       // pattern matches the enum
+            Some(i) => Some(i +1),
+            None => None,
+        }
+    }
+```
+```rust
+    fn plus_one(x:Option<i32>) -> Option<i32> {         
+        match x {
+            Some(i) => Some(i +1),                      // fails since pattern matching is not exhaustive
+        }                                               // for example, the None case is not matched
+    }
+```
+```rust
+    fn check(x: Option<i32>) {
+        if let Some(42) = x {                           // if-let enables non-exhaustive pattern matching
+            println!("Success!")                        // only executed if the match succeeds
+        } else {            
+            println!("Failure!")
+        }
+    }
 ```
