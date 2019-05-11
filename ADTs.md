@@ -107,3 +107,10 @@
 - type of an expression is checked as needed at runtime 
 - values keep a tag, set at creation, that indicate its type
 - disallowed operations cause runtime exceptions rather than compilation issues
+
+```ruby
+    def f(x, y)                                 # execution defined in all cases (throws a TypeError exception if input isn't valid
+        if x < 0 then z = "0" else z = x end
+        z / y
+    end
+```
