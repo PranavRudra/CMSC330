@@ -543,3 +543,68 @@
         println!("{}", e);                              // prints 10
     }
 ```
+
+### Smart Pointers
+
+- smart pointer is a reference plus metadata (i.e. `String` since it has a pointer to heap-allocated data along with its length and capacity)
+- `Box<T>` values point to heap-allocated data (`Box<T>` type implements the Deref and Drop traits)
+  - reduces copying from ownership moves (now we're just copying a pointer and not underlying data)
+  - enables dynamically sized objects (i.e. recursive types since size need not be known at compile time)
+```rust
+    enum List {                 // definition of a LinkedList
+        Nil,
+        Cons(i32, List)         // unable to allocate space for Cons field since it's recursively defined in terms of list
+    }
+```
+```rust
+    enum List {
+        Nil,
+        Cons(i32, Box<List>)    // memory allocation for List now possible since Box<List> has the fixed size of a pointer
+    }
+```
+- `Deref` trait indicates that `&x` has type `&{int}`
+- Enables use of `*` operator for dereferencing (can use it on `Box<T>` types since they implement `Deref`)
+- Translates `*x` into `*(x.deref())` (`x.deref()` returns `&x` to not take ownership of underlying data)
+```rust
+    fn hello(x:&str) {
+        println!("hello {}",x);
+    }
+    fn main() {
+        let m = Box::new(String::from("Rust"));
+        hello(&m);                                  // same as hello(&(*m)[..]) (converts &{Box<String>} to &str)
+    }
+```
+- `Drop` trait provides the method `fn drop(&mut self)` 
+-  Called when value implementing the trait dies
+-  Cannot call the `drop` method manually since that could lead to a double free
+```rust
+    fn main() {
+        let a = Cons(5,
+            Box::new(Cons(10,
+            Box::new(Nil))));
+        let b = Cons(3, Box::new(a));               
+        let c = Cons(4, Box::new(a));               // fails since Box::new takes ownership of its argument 
+                                                    // we want to be able to share elements between different lists
+    }
+```
+- `Rc<T>` (refernence counter) is a smart pointer that associates a counter with the underlying reference
+- Calling `Rc::clone(&a)` copies the pointer (not the pointed to data) and increments counter
+- Calling `drop` decrements the counter, freeing the data when count equals 0
+```rust
+    enum List {
+        Nil,
+        Cons(i32, Rc<List>)
+    }
+    
+    use List::{Cons, Nil};
+    
+    fn main() {
+        let a = Rc::new(Cons(5,
+            Rc::new(Cons(10,
+            Rc::new(Nil)))));
+        let b = Cons(3, Rc::clone(&a));         // clones the pointer to the first list and doesn't take ownership
+        let c = Cons(4, Rc::clone(&a));         // ok since ownership of a was not taken in previous call
+                                                // when b goes out of scope at end of method, count decremented to 1
+                                                // when c goes out of scope at end of method, count decremented to 0 (all resources freed) 
+    }
+```
