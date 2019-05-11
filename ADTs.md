@@ -72,7 +72,7 @@
 ```ocaml
     module type INT_SET =
         sig
-            type set                                            (* abstract/hidden so that it can be used to define function signatures but not be exposed *)
+            type set            (* abstract/hidden so that it can be used to define function signatures but not be exposed *)
             val empty : set
             val isEmpty : set -> bool
             val insert : set -> int -> set
