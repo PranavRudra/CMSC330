@@ -125,3 +125,10 @@
 - complete property: well-defined => well-typed
   - dynamic type systems are often complete since everything is well-defined and passes static type checking
   - static type systems not usually complete since not all behaviors are well-defined (i.e. previous C example)
+
+```ocaml
+    let f g = (g 1, g “hello”) in f (fun x -> x);;      (* well-defined and ill-typed *)
+    List.map (fun x -> x + x) [1; “hello”];;            (* ill-defined and ill-typed *)    
+    let x = 0 in 5 / x;;                                (* well-defined and well-typed *)
+    let x = Array.make 1 1 in x.(2);;                   (* well-defined and well-typed *) 
+```
