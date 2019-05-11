@@ -89,3 +89,21 @@
 ```ocaml
     IntSet.insert IntSetBST.empty 0;;   (* mixing IntSet, IntSetBST not allowed since they may have different representations *)
 ```
+
+## Types
+
+### Static Typing
+- well-typed programs are accepted by the language's type system
+- well-defined programs are defined by the language's semantics (i.e. `char buf[4]; buf[4] = 'c';` isn't well-defined)
+- type-safe language is a language in which well-typed programs are always well-defined (i.e. well-typed => well-defined)
+
+```ocaml
+    4 + "hi";;                                  (* undefined *)
+    if true then 0 else 4 + "hi";;              (* well defined since expression always evaluates to 0, but still rejected by type system *)
+    let f4 x = if x <= abs x then 0 else 4+"hi" (* well defined since expression always evaluates to 0, but still rejected by type system *)
+```
+
+### Dynamic Typing
+- type of an expression is checked as needed at runtime 
+- values keep a tag, set at creation, that indicate its type
+- disallowed operations cause runtime exceptions rather than compilation issues
