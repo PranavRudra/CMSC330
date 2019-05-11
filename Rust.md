@@ -457,3 +457,60 @@
         }
     }
 ```
+
+## Closures
+
+```rust
+    fn moveit(b:bool,x:i32) -> i32 {
+        let left = |z| z - 1;                           // closure (has an external environment)
+        fn right(z:i32) -> i32 { z+1 };                 // local function (no external environment)
+        if b { 
+            left(x) 
+        } else { 
+            right(x) 
+        }
+    }
+```
+```rust
+    let id = |x| x;                                     // rust infers non-polymorphic types based on how you use closures
+    let x = id(1);                                      // infers x in closure should be a 32-bit integer
+    let y = id("hi");                                   // fails: string slice is not a 32-bit integer 
+```
+```rust
+    fn app_int<T>(f:T, x:i32) -> i32 where T:Fn(i32) -> i32 {    // Fn trait enables us to pass in a closure
+        f(x)
+    }
+    
+    fn main() {
+        println!(“{}”, app_int((|x| x-1), 1));                  // prints 0
+    }
+```
+```rust
+    fn app<T,U,W>(f:T, x:U) -> W where T:Fn(U) -> W {           // fully polymorphic closure
+        f(x)
+    }
+    
+    fn main() {
+        println!("{}", app((|x| x-1), 1));                      // x inferred to be a 32-bit integer (prints 0)
+        let s = String::from("hi ");
+        println!("{}", app(|x| x + "there", s));                // x inferred to be a string (prints "hi there")
+    }
+```
+```rust
+    fn main() {
+        let x = 4;
+        let equal_to_x = |z| z == x;                            // captures the free variable x inside the closure
+        let y = 4;                                              // using a local function wouldn't work (has no environment)
+        assert!(equal_to_x(y))                                  // assertion is true
+    } 
+```
+- `FnOnce t`: moves or copies variables captured from its enclosing scope in closures (can only be called once)
+- `FnMut t`: borrows captured variables mutably from its enclosing scope in closures
+- `Fn t`: borrows captured variables immutably or copies 
+```rust
+    let x = String::from("hi");
+    let add_x = |z| x + z;                                      // closure is FnOnce, captures x 
+    println!("x = {}", x);                                      // fails since x has captured by the closure
+    let s = add_x(" there");                                    // consumes the string "hi" in the closure
+    let t = add_x(" joe");                                      // fails, add_x has already been used once and x has been destroyed
+```
