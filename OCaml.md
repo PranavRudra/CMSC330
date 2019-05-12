@@ -24,3 +24,19 @@
         |   Rect (w, l) -> w *. l                               (* custom data types are deconstructed with pattern matching *)
         |   Circle r -> r *. r *. 3.14
 ```
+```ocaml
+    type 'a mylist = Nil | Cons of 'a * 'a mylist;;             (* recursive data type *)
+    let lst = (Cons (10, Cons (20, Cons (30, Nil))));;          (* instantiating a mylist *)
+```
+
+## Imperative
+
+### Refs
+
+```ocaml
+    let z = 3;;                                                 (* z is immutably bound to the value 3 *)
+    let x = ref z;;
+    let y = x;;                                                 (* x, y both point to the area of memory holding 3 *)
+    x := 4;;                                                    (* modifying x does not change z since it is immutable *)
+    !y;;                                                        (* modifying x does change y since they both point to the same area of memory *)
+```
