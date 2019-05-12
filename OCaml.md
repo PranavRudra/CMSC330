@@ -67,3 +67,18 @@
     x == x;;                                                    (* physical equality check evaluates to true now *)
     x = x;;                                                     (* structural equality check hangs since data type is recursive*)
 ```
+### Mutable Fields
+
+```ocaml
+    type point = { x:int; y:int; mutable c:string };;           (* point is a record where c can be changed *)
+    let p = { x=0; y=0; c="red" };; 
+    p.c <- “white”;;                                            (* modifying the c field *)
+    p.x <- 3;;                                                  (* error, cannot modify non-mutable field *)
+```
+
+### Arrays
+
+```ocaml
+    let v = [|0.; 1.|];;                                        (* declares a float array *)
+    v.(0) <- 5.;;                                               (* array is now [|5.; 1.|] *)
+```
