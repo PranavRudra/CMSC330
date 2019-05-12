@@ -50,3 +50,13 @@
     g 1;;
     g 1;;                                                       (* returns 2 since enclosed y is incremented by 1 *)
 ```
+```ocaml
+    type 'a rlist = Nil | Cons of 'a * ('a rlist ref);;         (* refs enable cyclical data structures like rlist *)
+    let newcell x y = Cons(x, ref y);;
+    let updnext (Cons (_, r)) y = r := y;;
+    
+    let x = newcell 1 Nil;;                                     (* creates an rlist where the next pointer points to Nil *)
+    updnext x x;;                                               (* changes the next pointer to point back to the rlist itself *)
+    x == x;;                                                    (* physical equality check evaluates to true now *)
+    x = x;;                                                     (* structural equality check hangs since data type is recursive*)
+```
