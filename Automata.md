@@ -25,15 +25,15 @@
 
 ```ocaml
     let parse_S () =                                            (* where S -> xyz | abc *)
-        if lookahead () = “x” then (* S → xyz *)
-            (match_tok “x”;
-            match_tok “y”;
-            match_tok “z”)
-        else if lookahead () = “a” then (* S → abc *)
-            (match_tok “a”;
-            match_tok “b”;
-            match_tok “c”)
-        else raise (ParseError “parse_S”)
+        if lookahead () = "x" then                              (* S → xyz *)
+            (match_tok "x";
+            match_tok "y";
+            match_tok "z")
+        else if lookahead () = "a" then                         (* S → abc *)
+            (match_tok "a";
+            match_tok "b";
+            match_tok "c")
+        else raise (ParseError "parse_S")
 ```
 
 ### Refactoring
