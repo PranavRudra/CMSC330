@@ -40,3 +40,13 @@
     x := 4;;                                                    (* modifying x does not change z since it is immutable *)
     !y;;                                                        (* modifying x does change y since they both point to the same area of memory *)
 ```
+```ocaml
+     let f =
+        let y = ref 0 in                                        (* y is repeatedly incremented by the argument z *)          
+        fun z -> y := !y + z; !y                            
+    ;;
+    
+    let g = f ();;                                              (* g now equals fun z -> y := !y + z; !y *)
+    g 1;;
+    g 1;;                                                       (* returns 2 since enclosed y is incremented by 1 *)
+```
