@@ -72,7 +72,7 @@
 ```ocaml
     type point = { x:int; y:int; mutable c:string };;           (* point is a record where c can be changed *)
     let p = { x=0; y=0; c="red" };; 
-    p.c <- “white”;;                                            (* modifying the c field *)
+    p.c <- "white";;                                            (* modifying the c field *)
     p.x <- 3;;                                                  (* error, cannot modify non-mutable field *)
 ```
 
