@@ -82,3 +82,21 @@
     let v = [|0.; 1.|];;                                        (* declares a float array *)
     v.(0) <- 5.;;                                               (* array is now [|5.; 1.|] *)
 ```
+
+## Tail Recursion
+
+```ocaml
+    let rec sumlist l =
+        match l with
+        |  [] -> 0
+        | (x::xs) -> (sumlist xs) + x                           (* not tail recursive since x needed from this frame *)
+```
+```ocaml
+    let sumlist l =
+        let rec helper l a =
+            match l with
+            |  [] -> a
+            | (x::xs) -> (helper xs (a + x)) in                 (* tail recursive since accumulator involved *)
+        helper l 0                                              (* each stack frame is now independent and doesn't rely on previous frames *)
+    ;;
+```
