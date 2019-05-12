@@ -359,7 +359,7 @@
 
 ```rust
     struct Rectangle {
-        width: u32,                 // stack-allocated since size is known at compile-time
+        width: u32,                                         // stack-allocated since size is known at compile-time
         height: u32,
     }
     
@@ -412,7 +412,7 @@
         }
     }
 
-    let m = IpAddr ::V6(String::from("::1"));           // instantiated as enum::field(value)
+    let m = IpAddr::V6(String::from("::1"));            // instantiated as enum::field(value)
     m.call();
 ```
 
