@@ -16,4 +16,11 @@
     type coin = Heads | Tails;;                                 (* coin is basically an enum with two options *)
     type mylist = int * (int list);;                            (* mylist is a tuple of an int and an int list *)
     let add x ((n, xs) : mylist) : mylist = (n+1, x::xs);;      (* type annotations indicate type should be mylist and not int * (int list) *)
-``` 
+```
+```ocaml
+    type shape = Rect of float * float | Circle of float;;
+    let area s =
+        match s with
+        |   Rect (w, l) -> w *. l                               (* custom data types are deconstructed with pattern matching *)
+        |   Circle r -> r *. r *. 3.14
+```
