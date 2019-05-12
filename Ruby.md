@@ -138,6 +138,7 @@ sprintf("%d: %s", count, Time.now)  # returns formatted string w/o printing it
 
 - All unitialized fields in a class are set to `nil`
 - `nil` is a singleton object of the class NilClass
+- `nil` is not a printable character
 
 ## Arrays
 
