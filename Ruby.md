@@ -353,7 +353,7 @@ s !~ /bye/                  # true
 - `\s` - any whitespace
 - `\w` - any word character ([A-Za-z0-9_])
 - `\D` - any non-digit
-- `'\S` - any non-whitespace
+- `\S` - any non-whitespace
 - `\W` - any non-word character
 
 ### Back References
