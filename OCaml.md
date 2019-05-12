@@ -29,6 +29,13 @@
     let lst = (Cons (10, Cons (20, Cons (30, Nil))));;          (* instantiating a mylist *)
 ```
 
+## Equality
+
+- `=` checks if both operands are equal structurally
+- `<>` checks if operands are not equal structurally 
+- `==` checks if operands are equal physically
+- `!=` checks if operands are not equal physically
+
 ## Imperative
 
 ### Refs
