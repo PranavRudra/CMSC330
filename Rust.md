@@ -436,7 +436,7 @@
 ```rust
     fn plus_one(x:Option<i32>) -> Option<i32> {
         match x {                                       // pattern matches the enum
-            Some(i) => Some(i +1),
+            Some(i) => Some(i + 1),
             None => None,
         }
     }
@@ -444,7 +444,7 @@
 ```rust
     fn plus_one(x:Option<i32>) -> Option<i32> {         
         match x {
-            Some(i) => Some(i +1),                      // fails since pattern matching is not exhaustive
+            Some(i) => Some(i + 1),                     // fails since pattern matching is not exhaustive
         }                                               // for example, the None case is not matched
     }
 ```
