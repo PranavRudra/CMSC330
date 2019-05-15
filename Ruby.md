@@ -19,7 +19,7 @@ elsif grade >= 80 then
 elsif grade >= 70 then
     puts "You got a C"
 else
-    puts "Youre not doing so well"
+    puts "You're not doing so well"
 end
 ```
 
