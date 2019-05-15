@@ -51,7 +51,7 @@
 ```
 ```ocaml
     module type FOO =                                           (* defines module signature and exposes add function *)
-        sig                                                     (* signature names are all caps by convention *)
+        sig                                                     (* type names are all caps by convention *)
             val add : int -> int -> int                         (* default signature exposes everything in module *)
         end;;
         
