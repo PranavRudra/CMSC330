@@ -229,7 +229,7 @@
         let s2 = &s1;                                       // s2 is an immutable reference to the mutable string "hello"
         s2.push_str(“ there”);                              // disallowed since s2 is an immutable, read-only reference
     }                                                       // s2 is dropped at this point (but not referent)
-    let mut s3 = &mut s1;                                   // ok since s1 is a mutable reference
+    let s3 = &mut s1;                                       // ok since s1 is a mutable reference
     s3.push_str(“ there”);                                  // ok since s3 is a mutable reference
     println!(”String is {}”, s3);                           // ok
 ```
