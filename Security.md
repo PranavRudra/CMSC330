@@ -4,7 +4,7 @@
 
 - writing data beyond the bounds of the buffer
 - this extra data can overwrite the instruction pointer of the stack frame
-- when caller returns, instruction pointer can point to the buffer itself, which may contain malicious code that is executed
+- when caller returns, instruction pointer can point to buffer itself, which may contain malicious code that is executed
 
 ## CLI Injection
 
