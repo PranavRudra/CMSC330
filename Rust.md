@@ -562,12 +562,12 @@
         Cons(i32, Box<List>)    // memory allocation for List now possible since Box<List> has the fixed size of a pointer
     }
 ```
-- `Deref` trait indicates that `&x` has type `&{int}`
+- `Deref` trait indicates that `&x` has type `&{type of x}`
 - Enables use of `*` operator for dereferencing (can use it on `Box<T>` types since they implement `Deref`)
 - Translates `*x` into `*(x.deref())` (`x.deref()` returns `&x` to not take ownership of underlying data)
 ```rust
     fn hello(x:&str) {
-        println!("hello {}",x);
+        println!("hello {}", x);
     }
     fn main() {
         let m = Box::new(String::from("Rust"));
