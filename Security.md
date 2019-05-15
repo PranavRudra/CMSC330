@@ -26,7 +26,7 @@
   result = db.execute "SELECT * FROM Users WHERE Name='#{user}' AND Password='#{pass}' 
   
   # suppose we pass in user=frank' OR 1=1; --, pass=whocares
-  # code that is executed is SELECT * FROM Users WHERE Name='frank' OR 1=1; -- AND Password='whocares'
+  # query that is executed is SELECT * FROM Users WHERE Name='frank' OR 1=1; -- AND Password='whocares'
   # the password part is completely commented out and all users are retrieved since OR 1=1 is always true 
   # the big flaw that occurred that we failed to prevent was data being executed as code (we didn't ensure that data can't be code)
 ```
