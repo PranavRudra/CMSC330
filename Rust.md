@@ -587,7 +587,7 @@
                                                     // we want to be able to share elements between different lists
     }
 ```
-- `Rc<T>` (refernence counter) is a smart pointer that associates a counter with the underlying reference
+- `Rc<T>` (reference counter) is a smart pointer that associates a counter with the underlying reference
 - Calling `Rc::clone(&a)` copies the pointer (not the pointed to data) and increments counter
 - Calling `drop` decrements the counter, freeing the data when count equals 0
 ```rust
