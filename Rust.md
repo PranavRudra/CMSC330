@@ -461,7 +461,7 @@
 ## Closures
 
 ```rust
-    fn moveit(b:bool,x:i32) -> i32 {
+    fn moveit(b:bool, x:i32) -> i32 {
         let left = |z| z - 1;                           // closure (has an external environment)
         fn right(z:i32) -> i32 { z+1 };                 // local function (no external environment)
         if b { 
@@ -546,7 +546,7 @@
 
 ### Smart Pointers
 
-- smart pointer is a reference plus metadata (i.e. `String` since it has a pointer to heap-allocated data along with its length and capacity)
+- smart pointer is a reference plus metadata (i.e. `String` since it points to heap-allocated data along w/ length and capacity)
 - `Box<T>` values point to heap-allocated data (`Box<T>` type implements the Deref and Drop traits)
   - reduces copying from ownership moves (now we're just copying a pointer and not underlying data)
   - enables dynamically sized objects (i.e. recursive types since size need not be known at compile time)
