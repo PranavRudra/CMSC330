@@ -394,7 +394,7 @@
     }
     
     fn main() {
-        let novel =String::from("Generic Lifetime");
+        let novel = String::from("Generic Lifetime");
         let i = ImportantExcerpt { part: &novel; }
     }
 ```
